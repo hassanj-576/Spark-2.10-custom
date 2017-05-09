@@ -1954,9 +1954,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		newRdd.unpersist()
 		println("Inside Else")
 		val returnRDD= newRdd.map(x=>x*10)
-		dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
-		progressBar.foreach(_.finishAll())
-		returnRDD.doCheckpoint()
+		returnRDD
 	}
   }
 
@@ -1972,7 +1970,7 @@ class SparkContext(config: SparkConf) extends Logging {
   	println("Partition Size: "+partitions.size)
 	val results = new Array[U](partitions.size)
 	runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
-	
+	println("Result Size: "+result.size)
 	println("All result: !!")
 	results.foreach(println)
 	results
