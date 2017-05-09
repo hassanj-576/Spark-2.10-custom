@@ -1955,7 +1955,7 @@ class SparkContext(config: SparkConf) extends Logging {
   		println("Inside Else")
   		val returnRDD= newRdd.map(x=>x*10)
   		rdd.union(returnRDD.asInstanceOf[RDD[T]])
-        println(rdd.first())
+        //println(rdd.first())
         dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
         progressBar.foreach(_.finishAll())
   		rdd.doCheckpoint()
