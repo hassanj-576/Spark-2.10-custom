@@ -1,5 +1,0 @@
-/export/scratch1/home/jalil/spark-2.1.0/common/unsafe/src/test/java/org/apache/spark/unsafe/hash/Murmur3_x86_32Suite.java
-/export/scratch1/home/jalil/spark-2.1.0/common/unsafe/src/test/java/org/apache/spark/unsafe/types/CalendarIntervalSuite.java
-/export/scratch1/home/jalil/spark-2.1.0/common/unsafe/src/test/java/org/apache/spark/unsafe/types/UTF8StringSuite.java
-/export/scratch1/home/jalil/spark-2.1.0/common/unsafe/src/test/java/org/apache/spark/unsafe/array/LongArraySuite.java
-/export/scratch1/home/jalil/spark-2.1.0/common/unsafe/src/test/java/org/apache/spark/unsafe/PlatformUtilSuite.java

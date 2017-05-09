@@ -1,4 +1,0 @@
-/export/scratch1/home/jalil/spark-2.1.0/external/kafka-0-10/src/test/java/org/apache/spark/streaming/kafka010/JavaConsumerStrategySuite.java
-/export/scratch1/home/jalil/spark-2.1.0/external/kafka-0-10/src/test/java/org/apache/spark/streaming/kafka010/JavaDirectKafkaStreamSuite.java
-/export/scratch1/home/jalil/spark-2.1.0/external/kafka-0-10/src/test/java/org/apache/spark/streaming/kafka010/JavaKafkaRDDSuite.java
-/export/scratch1/home/jalil/spark-2.1.0/external/kafka-0-10/src/test/java/org/apache/spark/streaming/kafka010/JavaLocationStrategySuite.java
