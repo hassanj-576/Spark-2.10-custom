@@ -1979,17 +1979,17 @@ class SparkContext(config: SparkConf) extends Logging {
 	  rdd: RDD[T],
 	  func: (TaskContext, Iterator[T]) => U,
 	  partitions: Seq[Int]): Array[U] = {
-  	println("RUN JOB 1")
-  	println("Partition: "+partitions)
-  	println("Partition Size: "+partitions.size)
+  	// println("RUN JOB 1")
+  	// println("Partition: "+partitions)
+  	// println("Partition Size: "+partitions.size)
 	val results = new Array[U](partitions.size)
 	val newResult=runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
-	println("Result Size: "+results.size)
-	println("All result: !!")
-	results.foreach(println)
+	// println("Result Size: "+results.size)
+	// println("All result: !!")
+	// results.foreach(println)
 
-	print("ALL NEW RESULT: ")
-	println(newResult)
+	// print("ALL NEW RESULT: ")
+	// println(newResult)
 	results
   }
 
@@ -2001,7 +2001,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  rdd: RDD[T],
 	  func: Iterator[T] => U,
 	  partitions: Seq[Int]): Array[U] = {
-  	println("RUN JOB 2")
+  	//println("RUN JOB 2")
 	val cleanedFunc = clean(func)
 	runJob(rdd, (ctx: TaskContext, it: Iterator[T]) => cleanedFunc(it), partitions)
   }
@@ -2010,7 +2010,7 @@ class SparkContext(config: SparkConf) extends Logging {
    * Run a job on all partitions in an RDD and return the results in an array.
    */
   def runJob[T, U: ClassTag](rdd: RDD[T], func: (TaskContext, Iterator[T]) => U): Array[U] = {
-  	println("RUN JOB 3")
+  	//println("RUN JOB 3")
 	runJob(rdd, func, 0 until rdd.partitions.length)
   }
 
@@ -2018,7 +2018,7 @@ class SparkContext(config: SparkConf) extends Logging {
    * Run a job on all partitions in an RDD and return the results in an array.
    */
   def runJob[T, U: ClassTag](rdd: RDD[T], func: Iterator[T] => U): Array[U] = {
-  	println("RUN JOB 4")
+  	//println("RUN JOB 4")
 	runJob(rdd, func, 0 until rdd.partitions.length)
   }
 
@@ -2030,7 +2030,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	processPartition: (TaskContext, Iterator[T]) => U,
 	resultHandler: (Int, U) => Unit)
   {
-  	println("RUN JOB 5")
+  	//println("RUN JOB 5")
 	runJob[T, U](rdd, processPartition, 0 until rdd.partitions.length, resultHandler)
   }
 
@@ -2042,7 +2042,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  processPartition: Iterator[T] => U,
 	  resultHandler: (Int, U) => Unit)
   {
-  	println("RUN JOB 6")
+  	//println("RUN JOB 6")
 	val processFunc = (context: TaskContext, iter: Iterator[T]) => processPartition(iter)
 	runJob[T, U](rdd, processFunc, 0 until rdd.partitions.length, resultHandler)
   }
