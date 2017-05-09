@@ -1951,7 +1951,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	}else{
 		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
 		val returnRDD= newRdd.map(x=>x*10)
-		returnRdd
+		returnRDD
 	}
   }
 
