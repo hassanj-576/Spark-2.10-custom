@@ -1919,7 +1919,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("Short name: "+callSite.shortForm)
 	println("Cleaned Func: "+cleanedFunc)
 	println("RDD NAME: "+rdd.name)
-	val intercepted=0
+	var intercepted=0
 	if(rdd.name=="testRdd"){
 	  println("Test RDD FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
