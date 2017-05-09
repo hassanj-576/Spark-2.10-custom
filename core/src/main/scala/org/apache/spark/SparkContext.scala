@@ -1928,7 +1928,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		  println("Class of rdd name: "+ rdd.name.getClass)
 		  if(rdd.name == "testRdd"){
 			println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
-			rdd.unpersist()
+			
 			intercepted=1
 			idTemp=id
 		  }else{
@@ -1950,6 +1950,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  	rdd.doCheckpoint()
 	}else{
 		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
+		newRdd.unpersist()
 		val returnRDD= newRdd.map(x=>x*10)
 		returnRDD
 	}
