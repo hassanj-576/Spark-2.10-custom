@@ -1928,8 +1928,8 @@ class SparkContext(config: SparkConf) extends Logging {
             println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
             rdd.unpersist()
             println("PRINTING CACHED RDD")
-            val newRdd=rdd.map(x=>x*10)
-            newRdd.foreach(println)
+            val newRdd=rdd.asInstanceOf[RDD[Array[Int]]]
+            newRdd.map(x=>x*10).foreach(println)
           }else{
             println("CHECK FAILED")
           }
