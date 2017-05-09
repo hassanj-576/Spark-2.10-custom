@@ -1966,6 +1966,8 @@ class SparkContext(config: SparkConf) extends Logging {
 	  func: (TaskContext, Iterator[T]) => U,
 	  partitions: Seq[Int]): Array[U] = {
   	println("RUN JOB 1")
+  	println("Partition: "+partition)
+  	println("Partition Size: "+partitions.size)
 	val results = new Array[U](partitions.size)
 	runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
 	results
