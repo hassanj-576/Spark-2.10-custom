@@ -1957,8 +1957,10 @@ class SparkContext(config: SparkConf) extends Logging {
   		rdd.union(returnRDD.asInstanceOf[RDD[T]])
         //println(rdd.first())
         rdd.cache
+        rdd.setName("NewName")
         dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
         progressBar.foreach(_.finishAll())
+        println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
   		rdd.doCheckpoint()
     }
   }
