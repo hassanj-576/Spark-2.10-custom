@@ -1913,6 +1913,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("--")
 	println("--")
 	println("Spark Context")
+	resultHandler.foreach(println)
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
@@ -1965,7 +1966,6 @@ class SparkContext(config: SparkConf) extends Logging {
 	  func: (TaskContext, Iterator[T]) => U,
 	  partitions: Seq[Int]): Array[U] = {
   	println("RUN JOB 1")
-  	println("JOb One Index: "+index)
 	val results = new Array[U](partitions.size)
 	runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
 	results
