@@ -1950,15 +1950,16 @@ class SparkContext(config: SparkConf) extends Logging {
 	  	progressBar.foreach(_.finishAll())
 	  	rdd.doCheckpoint()
 	}else{
-		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
-		newRdd.unpersist()
-		println("Inside Else")
-		val returnRDD= newRdd.map(x=>x*10)
-		rdd.union(returnRDD.asInstanceOf[RDD[T]])
-		dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
-	  	progressBar.foreach(_.finishAll())
-		rdd.doCheckpoint()
-	}
+  		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
+  		newRdd.unpersist()
+  		println("Inside Else")
+  		val returnRDD= newRdd.map(x=>x*10)
+  		rdd.union(returnRDD.asInstanceOf[RDD[T]])
+        println(rdd.first())
+        dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
+        progressBar.foreach(_.finishAll())
+  		rdd.doCheckpoint()
+    }
   }
 
   /**
