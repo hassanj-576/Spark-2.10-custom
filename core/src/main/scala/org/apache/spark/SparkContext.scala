@@ -1699,6 +1699,7 @@ class SparkContext(config: SparkConf) extends Logging {
   }
   private[spark] def persistRDDCustom(rddPersist: RDD[_], rddID:RDD[_]) {
     println("CUSTOM PERSIST CALLED !!!!!")
+    println("RDD ID: "+rddID.id)
     persistentRdds(rddID.id) = rddPersist
   }
 
@@ -1957,6 +1958,7 @@ class SparkContext(config: SparkConf) extends Logging {
   		newRdd.unpersist()
         rdd.setName("NewName")
   		val returnRDD= newRdd.map(x=>x*10)
+        printf("CAlling Custom Persist")
         persistRDDCustom(returnRDD,rdd)
         println("RETURN RDD: "+returnRDD.first())
         //println(rdd.first())
