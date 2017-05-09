@@ -1919,19 +1919,17 @@ class SparkContext(config: SparkConf) extends Logging {
     println("Short name: "+callSite.shortForm)
     println("Cleaned Func: "+cleanedFunc)
     println("RDD NAME: "+rdd.name)
-    for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
-        println("PERSISTANT RDD NAME: "+rdd.name)
-        if(rdd.name=="SuperClass"){
-          println("Super Class found, Unpersisting")
-          rdd.unpersist()
-        }
-    }
-    for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
-        println("Second Time PERSISTANT RDD NAME: "+rdd.name)
-        if(rdd.name=="SuperClass"){
-          println("Super Class found, Unpersisting")
-          rdd.unpersist()
-        }
+    if(rdd.name=="testRdd"){
+      println("Test RDD FOUND")
+      for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
+          println("PERSISTANT RDD NAME: "+rdd.name)
+          if(rdd.name=="SuperClass"){
+            println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
+            rdd.unpersist()
+            println("PRINTING CACHED RDD")
+            rdd.foreach(println)
+          }
+      }
     }
 
     println("END Spark Context")
