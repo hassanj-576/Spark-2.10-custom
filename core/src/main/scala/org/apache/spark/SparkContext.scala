@@ -1923,7 +1923,7 @@ class SparkContext(config: SparkConf) extends Logging {
       println("Test RDD FOUND")
       for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
           println("PERSISTANT RDD NAME: "+rdd.name)
-          if(rdd.name=="SuperClass"){
+          if(rdd.name=="testRdd"){
             println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
             rdd.unpersist()
             println("PRINTING CACHED RDD")
