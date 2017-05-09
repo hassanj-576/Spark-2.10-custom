@@ -1970,9 +1970,8 @@ class SparkContext(config: SparkConf) extends Logging {
   	println("Partition Size: "+partitions.size)
 	val results = new Array[U](partitions.size)
 	runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
-	println("Index: "+index)
-	println("Result Index "+result[index])
-	println("All result: "+result)
+	
+	println("All result: "+results)
 	results
   }
 
