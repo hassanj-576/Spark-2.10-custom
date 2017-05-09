@@ -1954,6 +1954,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		newRdd.unpersist()
 		println("Inside Else")
 		val returnRDD= newRdd.map(x=>x*10)
+		rdd=returnRdd
 		returnRDD.doCheckpoint()
 	}
   }
