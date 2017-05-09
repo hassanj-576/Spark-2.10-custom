@@ -1941,7 +1941,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("END Spark Context")
 	println("--")
 	println("--")
-	if(intercepted=0){
+	if(intercepted==0){
 		logInfo("Starting job: " + callSite.shortForm)
 		if (conf.getBoolean("spark.logLineage", false)) {
 			logInfo("RDD's recursive dependencies:\n" + rdd.toDebugString)
