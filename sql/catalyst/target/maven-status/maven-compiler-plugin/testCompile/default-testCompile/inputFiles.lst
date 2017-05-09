@@ -1,0 +1,4 @@
+/export/scratch1/home/jalil/spark-2.1.0/sql/catalyst/src/test/java/org/apache/spark/sql/catalyst/expressions/HiveHasherSuite.java
+/export/scratch1/home/jalil/spark-2.1.0/sql/catalyst/src/test/java/org/apache/spark/sql/catalyst/expressions/XXH64Suite.java
+/export/scratch1/home/jalil/spark-2.1.0/sql/catalyst/src/test/java/org/apache/spark/sql/streaming/JavaOutputModeSuite.java
+/export/scratch1/home/jalil/spark-2.1.0/sql/catalyst/src/test/java/org/apache/spark/sql/catalyst/expressions/RowBasedKeyValueBatchSuite.java
