@@ -1975,7 +1975,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	results.foreach(println)
 
 	print("ALL NEW RESULT: ")
-	newResult.foreach(println)
+	println(newResult)
 	results
   }
 
