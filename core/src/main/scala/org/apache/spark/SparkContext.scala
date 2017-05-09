@@ -1957,6 +1957,7 @@ class SparkContext(config: SparkConf) extends Logging {
   		rdd.union(returnRDD.asInstanceOf[RDD[T]])
         //println(rdd.first())
         rdd.cache()
+        println(rdd.count)
         dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
         progressBar.foreach(_.finishAll())
   		rdd.doCheckpoint()
