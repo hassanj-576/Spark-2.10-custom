@@ -1958,9 +1958,11 @@ class SparkContext(config: SparkConf) extends Logging {
   		newRdd.unpersist()
         rdd.setName("NewName")
   		val returnRDD= newRdd.map(x=>x*10)
-        printf("CAlling Custom Persist")
-        persistRDDCustom(returnRDD,rdd)
+       
         println("RETURN RDD: "+returnRDD.first())
+        printf("CAlling Custom Persist")
+        cleaner.foreach(_.registerRDDForCleanup(returnRDD))
+        persistRDDCustom(returnRDD,rdd)
         //println(rdd.first())
        
     //     rdd.cache
