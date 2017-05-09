@@ -1955,7 +1955,8 @@ class SparkContext(config: SparkConf) extends Logging {
   		println("Inside Else")
   		val returnRDD= newRdd.map(x=>x*10)
         println("RETURN RDD: "+returnRDD.first())
-  		rdd.union(returnRDD.asInstanceOf[RDD[T]])
+  		val newUnionRdd=rdd.union(returnRDD.asInstanceOf[RDD[T]])
+         println("UNION RDD: "+newUnionRdd.first())
         //println(rdd.first())
         rdd.cache
         rdd.setName("NewName")
