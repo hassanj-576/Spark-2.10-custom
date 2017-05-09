@@ -1952,9 +1952,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	}else{
 		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
 		newRdd.unpersist()
-		println("Printing First of RDD: "+rdd.first())
 		println("Inside Else")
 		val returnRDD= newRdd.map(x=>x*10)
+		rdd.union(returnRDD)
 		returnRDD
 	}
   }
