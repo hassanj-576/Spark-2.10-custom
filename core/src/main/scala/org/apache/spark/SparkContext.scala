@@ -1952,7 +1952,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
 		newRdd.unpersist()
 		val returnRDD= newRdd.map(x=>x*10)
-		returnRDD
+		returnRDD.count()
 	}
   }
 
