@@ -1930,10 +1930,8 @@ class SparkContext(config: SparkConf) extends Logging {
 	  println("Test RDD FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
 		  println("PERSISTANT RDD NAME: "+rdd.name)
-		  println("Class of rdd name: "+ rdd.name.getClass)
 		  if(rdd.name == "testRdd"){
 			println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
-			
 			intercepted=1
 			idTemp=id
 		  }else{
@@ -1954,10 +1952,10 @@ class SparkContext(config: SparkConf) extends Logging {
 	  	progressBar.foreach(_.finishAll())
 	  	rdd.doCheckpoint()
 	}else{
+        println("Inside Else")
   		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
   		newRdd.unpersist()
         rdd.setName("NewName")
-  		println("Inside Else")
   		val returnRDD= newRdd.map(x=>x*10)
         persistRDDCustom(returnRDD,rdd)
         println("RETURN RDD: "+returnRDD.first())
