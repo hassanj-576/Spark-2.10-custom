@@ -1920,7 +1920,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("Cleaned Func: "+cleanedFunc)
 	println("RDD NAME: "+rdd.name)
 	var intercepted=0
-	var newRdd = sContext.emptyRDD[_]
+	var idTemp=0
 	if(rdd.name=="testRdd"){
 	  println("Test RDD FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
@@ -1929,10 +1929,8 @@ class SparkContext(config: SparkConf) extends Logging {
 		  if(rdd.name == "testRdd"){
 			println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
 			rdd.unpersist()
-			println("PRINTING CACHED RDD")
 			intercepted=1
-			newRdd=rdd.asInstanceOf[RDD[Long]]
-			newRdd.map(x=>x*10).foreach(println)
+			idTemp=id
 		  }else{
 			println("CHECK FAILED")
 		  }
@@ -1951,8 +1949,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	  	progressBar.foreach(_.finishAll())
 	  	rdd.doCheckpoint()
 	}else{
-		println("RETURNING NEW RDD")
-		newRdd
+		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
+		val returnRDD= newRdd.map(x=>x*10)
+		returnRdd
 	}
   }
 
