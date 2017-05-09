@@ -1961,7 +1961,7 @@ class SparkContext(config: SparkConf) extends Logging {
        
         println("RETURN RDD: "+returnRDD.first())
         printf("CAlling Custom Persist")
-        cleaner.foreach(_.registerRDDForCleanup(rdd.id))
+        cleaner.foreach(_.registerRDDForCleanup(rdd))
         persistRDDCustom(returnRDD,rdd)
         //println(rdd.first())
        
