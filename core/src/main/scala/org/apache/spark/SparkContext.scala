@@ -1697,6 +1697,10 @@ class SparkContext(config: SparkConf) extends Logging {
   private[spark] def persistRDD(rdd: RDD[_]) {
 	persistentRdds(rdd.id) = rdd
   }
+  private[spark] def persistRDDCustom(rddPersist: RDD[_], rddID:RDD[_]) {
+    println("CUSTOM PERSIST CALLED !!!!!")
+    persistentRdds(rddID.id) = rddPersist
+  }
 
   /**
    * Unpersist an RDD from memory and/or disk storage
@@ -1954,16 +1958,16 @@ class SparkContext(config: SparkConf) extends Logging {
   		newRdd.unpersist()
   		println("Inside Else")
   		val returnRDD= newRdd.map(x=>x*10)
+        persistRDDCustom(returnRDD,rdd)
         println("RETURN RDD: "+returnRDD.first())
-  		val newUnionRdd=rdd.union(returnRDD.asInstanceOf[RDD[T]])
-         println("UNION RDD: "+newUnionRdd.first())
         //println(rdd.first())
-        rdd.cache
-        rdd.setName("NewName")
-        dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
-        progressBar.foreach(_.finishAll())
-        println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
-  		rdd.doCheckpoint()
+       
+    //     rdd.cache
+    //     rdd.setName("NewName")
+    //     dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
+    //     progressBar.foreach(_.finishAll())
+    //     println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
+  		// rdd.doCheckpoint()
     }
   }
 
