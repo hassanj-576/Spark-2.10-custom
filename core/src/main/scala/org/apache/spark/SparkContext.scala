@@ -1913,7 +1913,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("--")
 	println("--")
 	println("Spark Context")
-	resultHandler.foreach(println)
+	println(resultHandler)
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
