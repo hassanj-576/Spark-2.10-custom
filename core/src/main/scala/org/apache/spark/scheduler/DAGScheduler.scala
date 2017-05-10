@@ -413,7 +413,7 @@ class DAGScheduler(
    */
   private[scheduler] def getShuffleDependencies(
       rdd: RDD[_]): HashSet[ShuffleDependency[_, _, _]] = {
-    println("IN GET SHUFFEL DEPENDENCIES")
+    //--println("IN GET SHUFFEL DEPENDENCIES")
     val parents = new HashSet[ShuffleDependency[_, _, _]]
     val visited = new HashSet[RDD[_]]
     val waitingForVisit = new Stack[RDD[_]]
@@ -425,10 +425,10 @@ class DAGScheduler(
         toVisit.dependencies.foreach {
           case shuffleDep: ShuffleDependency[_, _, _] =>
             parents += shuffleDep
-            println("Shuffel Dependency added")
+            //--println("Shuffel Dependency added")
           case dependency =>
             waitingForVisit.push(dependency.rdd)
-            println("Other Dependency pushed to list")
+            //--println("Other Dependency pushed to list")
         }
       }
     }
@@ -436,7 +436,7 @@ class DAGScheduler(
   }
 
   private def getMissingParentStages(stage: Stage): List[Stage] = {
-    println("IN GET MISSING PARANT STAGE")
+    //--println("IN GET MISSING PARANT STAGE")
     val missing = new HashSet[Stage]
     val visited = new HashSet[RDD[_]]
     // We are manually maintaining a stack here to prevent StackOverflowError
@@ -444,17 +444,17 @@ class DAGScheduler(
     val waitingForVisit = new Stack[RDD[_]]
     def visit(rdd: RDD[_]) {
       if (!visited(rdd)) {
-        println("RDD Name:  "+rdd.name+" ID: "+rdd.id+" Added to visited")
+        //--println("RDD Name:  "+rdd.name+" ID: "+rdd.id+" Added to visited")
         visited += rdd
         val rddHasUncachedPartitions = getCacheLocs(rdd).contains(Nil)
-        println("RDD Has uncached partitions: "+rddHasUncachedPartitions )
+        //--println("RDD Has uncached partitions: "+rddHasUncachedPartitions )
         if (rddHasUncachedPartitions) {
           for (dep <- rdd.dependencies) {
             dep match {
               case shufDep: ShuffleDependency[_, _, _] =>
                 val mapStage = getOrCreateShuffleMapStage(shufDep, stage.firstJobId)
                 if (!mapStage.isAvailable) {
-                  println("Found Missing Dependency" +mapStage.toString)
+                  //--println("Found Missing Dependency" +mapStage.toString)
                   missing += mapStage
                 }
               case narrowDep: NarrowDependency[_] =>
@@ -579,21 +579,21 @@ class DAGScheduler(
         "Attempting to access a non-existent partition: " + p + ". " +
           "Total number of partitions: " + maxPartitions)
     }
-    //println("SUBMIT JOB")
-    //println("---")
-    //println("---")
+    ////--println("SUBMIT JOB")
+    ////--println("---")
+    ////--println("---")
 
-    ////println("RDD: ")
-    ////println(rdd.first())
-    //println("RDD:")
-    //println(rdd.toString)
-    //println("RDD Cached: "+rdd.getStorageLevel.useMemory)
-    //println("Call Site: ")
-    //println(callSite)
-    //println("Properties: ")
-    //println(properties)
-    //println("Function : ")
-    //println(func)
+    //////--println("RDD: ")
+    //////--println(rdd.first())
+    ////--println("RDD:")
+    ////--println(rdd.toString)
+    ////--println("RDD Cached: "+rdd.getStorageLevel.useMemory)
+    ////--println("Call Site: ")
+    ////--println(callSite)
+    ////--println("Properties: ")
+    ////--println(properties)
+    ////--println("Function : ")
+    ////--println(func)
    
    
    
@@ -607,15 +607,15 @@ class DAGScheduler(
 
     assert(partitions.size > 0)
     val func2 = func.asInstanceOf[(TaskContext, Iterator[_]) => _]
-     //println("Function 2: ")
-    //println(func2)
+     ////--println("Function 2: ")
+    ////--println(func2)
     val waiter = new JobWaiter(this, jobId, partitions.size, resultHandler)
     eventProcessLoop.post(JobSubmitted(
       jobId, rdd, func2, partitions.toArray, callSite, waiter,
       SerializationUtils.clone(properties)))
-    //println("END SUBMIT JOB")
-    //println("---")
-    //println("---")
+    ////--println("END SUBMIT JOB")
+    ////--println("---")
+    ////--println("---")
     waiter
   }
 
@@ -881,7 +881,7 @@ class DAGScheduler(
     logInfo("Final stage: " + finalStage + " (" + finalStage.name + ")")
     logInfo("Parents of final stage: " + finalStage.parents)
     logInfo("Missing parents: " + getMissingParentStages(finalStage))
-    println("MISSING PARENT LIST SIZE: "+ getMissingParentStages(finalStage).size)
+    //--println("MISSING PARENT LIST SIZE: "+ getMissingParentStages(finalStage).size)
 
     val jobSubmissionTime = clock.getTimeMillis()
     jobIdToActiveJob(jobId) = job
@@ -950,7 +950,7 @@ class DAGScheduler(
           submitMissingTasks(stage, jobId.get)
         } else {
           for (parent <- missing) {
-            println("Parent is missing !!")
+            //--println("Parent is missing !!")
             submitStage(parent)
           }
           waitingStages += stage
@@ -1041,16 +1041,16 @@ class DAGScheduler(
         return
     }
 
-    //println("--")
-    //println("--")
-    //println("submitMissingTasks")
-    //println("Stage Id: "+stage.id)
-    //println("Stage Latest Info Attempt id: "+stage.latestInfo.attemptId)   
-    //println("Stage latest info task metrics: "+stage.latestInfo.taskMetrics)
-    //println("Properties: "+properties)
-    //println("END submitMissingTasks")
-    //println("--")
-    //println("--")
+    ////--println("--")
+    ////--println("--")
+    ////--println("submitMissingTasks")
+    ////--println("Stage Id: "+stage.id)
+    ////--println("Stage Latest Info Attempt id: "+stage.latestInfo.attemptId)   
+    ////--println("Stage latest info task metrics: "+stage.latestInfo.taskMetrics)
+    ////--println("Properties: "+properties)
+    ////--println("END submitMissingTasks")
+    ////--println("--")
+    ////--println("--")
 
     val tasks: Seq[Task[_]] = try {
       stage match {
