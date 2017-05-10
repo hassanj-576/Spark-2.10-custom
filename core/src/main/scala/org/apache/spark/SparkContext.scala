@@ -1929,20 +1929,20 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("RDD NAME: "+rdd.name)
 	var intercepted=0
 	var idTemp=0
-	if(rdd.name=="testRdd"){
-	  println("SOMETHING ELSE  FOUND")
+	if(rdd.name=="superSet"){
+	  println("SuperSet  FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
 		  println("PERSISTANT RDD NAME: "+rdd.name)
-		  if(rdd.name == "testRdd"){
-			println("TEST RDD IN PERSISTANT FOUND, UN PERSISTING")
+		  if(rdd.name == "superSet"){
+			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
 			idTemp=id
 		  }else{
             if(rdd.name == "NewName"){
+                println("Previous Iteration Cached rdd found, unpersisting")
                 rdd.unpersist()
 
             }
-			println("CHECK FAILED")
 		  }
 	  }
 	}
@@ -1959,11 +1959,16 @@ class SparkContext(config: SparkConf) extends Logging {
 	  	progressBar.foreach(_.finishAll())
 	  	rdd.doCheckpoint()
 	}else{
-        println("Inside Else")
-  		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
+        println("Inside Calcuation for new RDD from Superset")
+        try{
+  		    val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[(Long, Array[(Long, Double)])]]
+        }
+         catch {
+            case e: Exception => println("Exception when trying to cast RDD: "+e)
+        }
   		//newRdd.unpersist()
         rdd.setName("NewName")
-  		var returnRDD= newRdd.map(x=>x*10)
+  		var returnRDD= newRdd.map(x=>(x._1+1,x._2))
         returnRDD.id=rdd.id
         returnRDD.cache
         rdd.clearDependenciesCustom
