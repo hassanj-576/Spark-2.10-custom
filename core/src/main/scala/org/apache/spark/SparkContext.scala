@@ -1959,6 +1959,8 @@ class SparkContext(config: SparkConf) extends Logging {
         rdd.setName("NewName")
   		val returnRDD= newRdd.map(x=>x*10)
         rdd.clearDependencies
+        println("RDD DEPENDENCIES: ")
+        rdd.dependencies.foreach(println)
         dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
         progressBar.foreach(_.finishAll())
         rdd.doCheckpoint()

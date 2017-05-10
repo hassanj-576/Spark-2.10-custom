@@ -413,6 +413,7 @@ class DAGScheduler(
    */
   private[scheduler] def getShuffleDependencies(
       rdd: RDD[_]): HashSet[ShuffleDependency[_, _, _]] = {
+    println("IN GET SHUFFEL DEPENDENCIES")
     val parents = new HashSet[ShuffleDependency[_, _, _]]
     val visited = new HashSet[RDD[_]]
     val waitingForVisit = new Stack[RDD[_]]
@@ -424,8 +425,10 @@ class DAGScheduler(
         toVisit.dependencies.foreach {
           case shuffleDep: ShuffleDependency[_, _, _] =>
             parents += shuffleDep
+            println("Shuffel Dependency added")
           case dependency =>
             waitingForVisit.push(dependency.rdd)
+            println("Other Dependency pushed to list")
         }
       }
     }
@@ -878,6 +881,7 @@ class DAGScheduler(
     logInfo("Final stage: " + finalStage + " (" + finalStage.name + ")")
     logInfo("Parents of final stage: " + finalStage.parents)
     logInfo("Missing parents: " + getMissingParentStages(finalStage))
+    println("MISSING PARENT LIST SIZE: "+ getMissingParentStages(finalStage).size)
 
     val jobSubmissionTime = clock.getTimeMillis()
     jobIdToActiveJob(jobId) = job
@@ -946,6 +950,7 @@ class DAGScheduler(
           submitMissingTasks(stage, jobId.get)
         } else {
           for (parent <- missing) {
+            println("Parent is missing !!")
             submitStage(parent)
           }
           waitingStages += stage
