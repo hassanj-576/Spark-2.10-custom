@@ -1955,7 +1955,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	}else{
         println("Inside Else")
   		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
-  		newRdd.unpersist()
+  		//newRdd.unpersist()
         rdd.setName("NewName")
   		var returnRDD= newRdd.map(x=>x*10)
         returnRDD.id=rdd.id
