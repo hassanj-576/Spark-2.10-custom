@@ -1936,6 +1936,10 @@ class SparkContext(config: SparkConf) extends Logging {
 			intercepted=1
 			idTemp=id
 		  }else{
+            if(rdd.name == "NewName"){
+                rdd.unpersist()
+
+            }
 			println("CHECK FAILED")
 		  }
 	  }
