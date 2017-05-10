@@ -433,6 +433,7 @@ class DAGScheduler(
   }
 
   private def getMissingParentStages(stage: Stage): List[Stage] = {
+    println("IN GET MISSING PARANT STAGE")
     val missing = new HashSet[Stage]
     val visited = new HashSet[RDD[_]]
     // We are manually maintaining a stack here to prevent StackOverflowError
@@ -440,8 +441,10 @@ class DAGScheduler(
     val waitingForVisit = new Stack[RDD[_]]
     def visit(rdd: RDD[_]) {
       if (!visited(rdd)) {
+        println("RDD Name:  "+rdd.name+" ID: "+rdd.id+" Added to visited")
         visited += rdd
         val rddHasUncachedPartitions = getCacheLocs(rdd).contains(Nil)
+        println("RDD Has uncached partitions: "+rddHasUncachedPartitions )
         if (rddHasUncachedPartitions) {
           for (dep <- rdd.dependencies) {
             dep match {
