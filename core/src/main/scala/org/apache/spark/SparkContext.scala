@@ -1963,7 +1963,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		try{
 			val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[(Long, Array[(Long, Double)])]]
 			rdd.setName("NewName")
-			var returnRDD= newRdd.map(x=>(x._1+1,x._2))
+			var returnRDD= newRdd.map(x=>(x._1,x._2))
 			returnRDD.id=rdd.id
 			returnRDD.cache
 			rdd.clearDependenciesCustom
