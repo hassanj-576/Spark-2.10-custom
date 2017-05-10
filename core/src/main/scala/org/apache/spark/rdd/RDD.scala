@@ -1755,7 +1755,7 @@ abstract class RDD[T: ClassTag](
   }
   private[spark] def clearDependenciesCustom() {
     dependencies_ = null
-    deps = null
+    deps = Seq.empty[Dependency[_]]
   }
 
   /** A description of this RDD and its recursive dependencies for debugging. */
