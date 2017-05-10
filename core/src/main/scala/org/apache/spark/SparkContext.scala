@@ -1957,18 +1957,18 @@ class SparkContext(config: SparkConf) extends Logging {
   		val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[Long]]
   		newRdd.unpersist()
         rdd.setName("NewName")
-  		val returnRDD= newRdd.map(x=>x*10)
+  		var returnRDD= newRdd.map(x=>x*10)
         rdd.clearDependenciesCustom
         println("RDD DEPENDENCIES: ")
         println("SIZZE: "+rdd.dependencies.size)
         rdd.dependencies.foreach(println)
         println("RETURN RDD DEPENDENCIES") 
-        rintln("SIZZE: "+returnRDD.dependencies.size)
+        prrintln("SIZZE: "+returnRDD.dependencies.size)
         returnRDD.dependencies.foreach(println)
         returnRDD.id=rdd.id
-        
 
-        dagScheduler.runJob(returnRDD, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+
+        dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
         progressBar.foreach(_.finishAll())
         rdd.doCheckpoint()
         //println(rdd.first())
