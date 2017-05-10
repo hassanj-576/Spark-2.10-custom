@@ -1958,6 +1958,8 @@ class SparkContext(config: SparkConf) extends Logging {
   		newRdd.unpersist()
         rdd.setName("NewName")
   		var returnRDD= newRdd.map(x=>x*10)
+        returnRDD.id=rdd.id
+        returnRDD.cache
         rdd.clearDependenciesCustom
         println("RDD DEPENDENCIES: ")
         println("SIZZE: "+rdd.dependencies.size)
