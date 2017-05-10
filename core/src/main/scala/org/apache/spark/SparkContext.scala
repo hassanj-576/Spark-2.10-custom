@@ -1963,7 +1963,7 @@ class SparkContext(config: SparkConf) extends Logging {
         println("SIZZE: "+rdd.dependencies.size)
         rdd.dependencies.foreach(println)
         println("RETURN RDD DEPENDENCIES") 
-        prrintln("SIZZE: "+returnRDD.dependencies.size)
+        println("SIZZE: "+returnRDD.dependencies.size)
         returnRDD.dependencies.foreach(println)
         returnRDD.id=rdd.id
 
