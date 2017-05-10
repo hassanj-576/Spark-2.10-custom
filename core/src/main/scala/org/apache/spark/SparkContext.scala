@@ -1915,25 +1915,25 @@ class SparkContext(config: SparkConf) extends Logging {
 	  throw new IllegalStateException("SparkContext has been shutdown")
 	}
 
-	println("--")
-	println("--")
-	println("Spark Context")
-	println("RDD DEPENDENCIES: ")
-	println("SIZZE: "+rdd.dependencies.size)
-	rdd.dependencies.foreach(println)
+	// println("--")
+	// println("--")
+	// println("Spark Context")
+	// println("RDD DEPENDENCIES: ")
+	// println("SIZZE: "+rdd.dependencies.size)
+	// rdd.dependencies.foreach(println)
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
-	println("Short name: "+callSite.shortForm)
-	println("Cleaned Func: "+cleanedFunc)
-	println("RDD NAME: "+rdd.name)
+	// println("Short name: "+callSite.shortForm)
+	// println("Cleaned Func: "+cleanedFunc)
+	// println("RDD NAME: "+rdd.name)
 	var intercepted=0
 	var idTemp=0
 	var newN=0;
 	if(rdd.name=="superSet"){
-	  println("SuperSet  FOUND")
+	  // println("SuperSet  FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
-		  println("PERSISTANT RDD NAME: "+rdd.name)
+		  // println("PERSISTANT RDD NAME: "+rdd.name)
 		  if(rdd.name == "superSet"){
 			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
@@ -1950,9 +1950,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	  }
 	}
 
-	println("END Spark Context")
-	println("--")
-	println("--")
+	// println("END Spark Context")
+	// println("--")
+	// println("--")
 	if(intercepted==0){
 		logInfo("Starting job: " + callSite.shortForm)
 		if (conf.getBoolean("spark.logLineage", false)) {
