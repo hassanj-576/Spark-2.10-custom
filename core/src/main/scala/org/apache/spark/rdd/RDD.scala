@@ -1753,6 +1753,10 @@ abstract class RDD[T: ClassTag](
   private[spark] def clearDependencies() {
     dependencies_ = null
   }
+  private[spark] def clearDependenciesCustom() {
+    dependencies_ = null
+    deps = null
+  }
 
   /** A description of this RDD and its recursive dependencies for debugging. */
   def toDebugString: String = {
