@@ -1918,7 +1918,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("--")
 	println("--")
 	println("Spark Context")
-	println(resultHandler)
+    println("RDD DEPENDENCIES: ")
+    println("SIZZE: "+rdd.dependencies.size)
+    rdd.dependencies.foreach(println)
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
@@ -1965,9 +1967,7 @@ class SparkContext(config: SparkConf) extends Logging {
         returnRDD.id=rdd.id
         returnRDD.cache
         rdd.clearDependenciesCustom
-        println("RDD DEPENDENCIES: ")
-        println("SIZZE: "+rdd.dependencies.size)
-        rdd.dependencies.foreach(println)
+        
         println("RETURN RDD DEPENDENCIES") 
         println("SIZZE: "+returnRDD.dependencies.size)
         returnRDD.dependencies.foreach(println)
