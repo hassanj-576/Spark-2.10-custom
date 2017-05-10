@@ -451,6 +451,7 @@ class DAGScheduler(
               case shufDep: ShuffleDependency[_, _, _] =>
                 val mapStage = getOrCreateShuffleMapStage(shufDep, stage.firstJobId)
                 if (!mapStage.isAvailable) {
+                  println("Found Missing Dependency" +mapStage.toString)
                   missing += mapStage
                 }
               case narrowDep: NarrowDependency[_] =>
