@@ -1927,7 +1927,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("RDD NAME: "+rdd.name)
 	var intercepted=0
 	var idTemp=0
-	if(rdd.name=="somethingelse"){
+	if(rdd.name=="testRdd"){
 	  println("SOMETHING ELSE  FOUND")
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
 		  println("PERSISTANT RDD NAME: "+rdd.name)
