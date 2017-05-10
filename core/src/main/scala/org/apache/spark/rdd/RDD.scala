@@ -1750,7 +1750,7 @@ abstract class RDD[T: ClassTag](
    * collected. Subclasses of RDD may override this method for implementing their own cleaning
    * logic. See [[org.apache.spark.rdd.UnionRDD]] for an example.
    */
-  protected def clearDependencies() {
+  private[spark] def clearDependencies() {
     dependencies_ = null
   }
 
