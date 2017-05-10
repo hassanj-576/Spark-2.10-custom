@@ -1698,9 +1698,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	persistentRdds(rdd.id) = rdd
   }
   private[spark] def persistRDDCustom(rddPersist: RDD[_], rddID:RDD[_]) {
-    println("CUSTOM PERSIST CALLED !!!!!")
-    println("RDD ID: "+rddID.id)
-    persistentRdds(rddID.id) = rddPersist
+	println("CUSTOM PERSIST CALLED !!!!!")
+	println("RDD ID: "+rddID.id)
+	persistentRdds(rddID.id) = rddPersist
   }
 
   /**
@@ -1918,9 +1918,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	println("--")
 	println("--")
 	println("Spark Context")
-    println("RDD DEPENDENCIES: ")
-    println("SIZZE: "+rdd.dependencies.size)
-    rdd.dependencies.foreach(println)
+	println("RDD DEPENDENCIES: ")
+	println("SIZZE: "+rdd.dependencies.size)
+	rdd.dependencies.foreach(println)
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
@@ -1938,11 +1938,11 @@ class SparkContext(config: SparkConf) extends Logging {
 			intercepted=1
 			idTemp=id
 		  }else{
-            if(rdd.name == "NewName"){
-                println("Previous Iteration Cached rdd found, unpersisting")
-                rdd.unpersist()
+			if(rdd.name == "NewName"){
+				println("Previous Iteration Cached rdd found, unpersisting")
+				rdd.unpersist()
 
-            }
+			}
 		  }
 	  }
 	}
@@ -1954,43 +1954,44 @@ class SparkContext(config: SparkConf) extends Logging {
 		logInfo("Starting job: " + callSite.shortForm)
 		if (conf.getBoolean("spark.logLineage", false)) {
 			logInfo("RDD's recursive dependencies:\n" + rdd.toDebugString)
-	  	}
-	  	dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
-	  	progressBar.foreach(_.finishAll())
-	  	rdd.doCheckpoint()
+		}
+		dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+		progressBar.foreach(_.finishAll())
+		rdd.doCheckpoint()
 	}else{
-        println("Inside Calcuation for new RDD from Superset")
-        try{
-  		    val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[(Long, Array[(Long, Double)])]]
-        }
-         catch {
-            case e: Exception => println("Exception when trying to cast RDD: "+e)
-        }
-  		//newRdd.unpersist()
-        rdd.setName("NewName")
-  		var returnRDD= newRdd.map(x=>(x._1+1,x._2))
-        returnRDD.id=rdd.id
-        returnRDD.cache
-        rdd.clearDependenciesCustom
-        
-        println("RETURN RDD DEPENDENCIES") 
-        println("SIZZE: "+returnRDD.dependencies.size)
-        returnRDD.dependencies.foreach(println)
-        returnRDD.id=rdd.id
+		println("Inside Calcuation for new RDD from Superset")
+		try{
+			val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[(Long, Array[(Long, Double)])]]
+			rdd.setName("NewName")
+			var returnRDD= newRdd.map(x=>(x._1+1,x._2))
+			returnRDD.id=rdd.id
+			returnRDD.cache
+			rdd.clearDependenciesCustom
+			
+			println("RETURN RDD DEPENDENCIES") 
+			println("SIZZE: "+returnRDD.dependencies.size)
+			returnRDD.dependencies.foreach(println)
+			returnRDD.id=rdd.id
 
 
-        dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
-        progressBar.foreach(_.finishAll())
-        rdd.doCheckpoint()
-        //println(rdd.first())
-       
-    //     rdd.cache
-    //     rdd.setName("NewName")
-    //     dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
-    //     progressBar.foreach(_.finishAll())
-    //     println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
-  		// rdd.doCheckpoint()
-    }
+			dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+			progressBar.foreach(_.finishAll())
+			rdd.doCheckpoint()
+		}
+		 catch {
+			case e: Exception => println("Exception when trying to cast RDD: "+e)
+		}
+		//newRdd.unpersist()
+		
+		//println(rdd.first())
+	   
+	//     rdd.cache
+	//     rdd.setName("NewName")
+	//     dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
+	//     progressBar.foreach(_.finishAll())
+	//     println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
+		// rdd.doCheckpoint()
+	}
   }
 
   /**
@@ -2000,9 +2001,9 @@ class SparkContext(config: SparkConf) extends Logging {
 	  rdd: RDD[T],
 	  func: (TaskContext, Iterator[T]) => U,
 	  partitions: Seq[Int]): Array[U] = {
-  	// println("RUN JOB 1")
-  	// println("Partition: "+partitions)
-  	// println("Partition Size: "+partitions.size)
+	// println("RUN JOB 1")
+	// println("Partition: "+partitions)
+	// println("Partition Size: "+partitions.size)
 	val results = new Array[U](partitions.size)
 	val newResult=runJob[T, U](rdd, func, partitions, (index, res) => results(index) = res)
 	// println("Result Size: "+results.size)
@@ -2022,7 +2023,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  rdd: RDD[T],
 	  func: Iterator[T] => U,
 	  partitions: Seq[Int]): Array[U] = {
-  	//println("RUN JOB 2")
+	//println("RUN JOB 2")
 	val cleanedFunc = clean(func)
 	runJob(rdd, (ctx: TaskContext, it: Iterator[T]) => cleanedFunc(it), partitions)
   }
@@ -2031,7 +2032,7 @@ class SparkContext(config: SparkConf) extends Logging {
    * Run a job on all partitions in an RDD and return the results in an array.
    */
   def runJob[T, U: ClassTag](rdd: RDD[T], func: (TaskContext, Iterator[T]) => U): Array[U] = {
-  	//println("RUN JOB 3")
+	//println("RUN JOB 3")
 	runJob(rdd, func, 0 until rdd.partitions.length)
   }
 
@@ -2039,7 +2040,7 @@ class SparkContext(config: SparkConf) extends Logging {
    * Run a job on all partitions in an RDD and return the results in an array.
    */
   def runJob[T, U: ClassTag](rdd: RDD[T], func: Iterator[T] => U): Array[U] = {
-  	//println("RUN JOB 4")
+	//println("RUN JOB 4")
 	runJob(rdd, func, 0 until rdd.partitions.length)
   }
 
@@ -2051,7 +2052,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	processPartition: (TaskContext, Iterator[T]) => U,
 	resultHandler: (Int, U) => Unit)
   {
-  	//println("RUN JOB 5")
+	//println("RUN JOB 5")
 	runJob[T, U](rdd, processPartition, 0 until rdd.partitions.length, resultHandler)
   }
 
@@ -2063,7 +2064,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  processPartition: Iterator[T] => U,
 	  resultHandler: (Int, U) => Unit)
   {
-  	//println("RUN JOB 6")
+	//println("RUN JOB 6")
 	val processFunc = (context: TaskContext, iter: Iterator[T]) => processPartition(iter)
 	runJob[T, U](rdd, processFunc, 0 until rdd.partitions.length, resultHandler)
   }
