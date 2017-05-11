@@ -1973,8 +1973,8 @@ class SparkContext(config: SparkConf) extends Logging {
 			//returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
             rdd.deps=returnRdd.deps
-            rdd.dependencies_=returnRdd.dependencies_
-            
+            //rdd.dependencies_=returnRdd.dependencies_
+
 			dagScheduler.runJob(rdd.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
 			progressBar.foreach(_.finishAll())
 			rdd.doCheckpoint()
