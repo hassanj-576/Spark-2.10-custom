@@ -1940,9 +1940,9 @@ class SparkContext(config: SparkConf) extends Logging {
 			intercepted=1
 			idTemp=id
 		  }else {
-		  // 		if(rdd.name == "NewName"){
-				// // println("Previous Iteration Cached rdd found, unpersisting")
-				// // rdd.unpersist()
+		  		if(rdd.name == "NewName"){
+      				println("Previous Iteration Cached rdd found, unpersisting")
+      				rdd.unpersist()
 			}else if (rdd.name=="nRdd"){
 				newN=rdd.asInstanceOf[RDD[Int]].first()
 				rdd.unpersist()
@@ -1970,16 +1970,12 @@ class SparkContext(config: SparkConf) extends Logging {
 			var tempRdd= newRdd.map(values=>(values._1,values._2.zipWithIndex.map(y=>(y._2,y._1))))
 			var returnRDD=tempRdd.map(values=> (values._1,values._2.filter(z=>z._1<newN).map(x=>x._2)))
 			returnRDD.id=rdd.id
-			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
+			//returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
-			
-			println("RETURN RDD DEPENDENCIES") 
-			println("SIZZE: "+returnRDD.dependencies.size)
-			returnRDD.dependencies.foreach(println)
-			returnRDD.id=rdd.id
-
-
-			dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+            rdd.deps=returnRdd.deps
+            rdd.dependencies_=returnRdd.dependencies_
+            
+			dagScheduler.runJob(rdd.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
 			progressBar.foreach(_.finishAll())
 			rdd.doCheckpoint()
 		}
