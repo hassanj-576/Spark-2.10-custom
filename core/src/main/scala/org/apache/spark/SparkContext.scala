@@ -1939,12 +1939,14 @@ class SparkContext(config: SparkConf) extends Logging {
 			intercepted=1
 			idTemp=id
 		  }else {
-				if (rdd.name=="nRdd"){
-					newN=rdd.asInstanceOf[RDD[Int]].first()
-					rdd.unpersist()
-				} 
+		  		if(rdd.name == "NewName"){
+				println("Previous Iteration Cached rdd found, unpersisting")
+				//rdd.unpersist()
+			}else if (rdd.name=="nRdd"){
+				newN=rdd.asInstanceOf[RDD[Int]].first()
+				rdd.unpersist()
 			}
-		}
+		  }
 	  }
 	}
 
@@ -1969,6 +1971,11 @@ class SparkContext(config: SparkConf) extends Logging {
 			returnRDD.id=rdd.id
 			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
+			
+			//println("RETURN RDD DEPENDENCIES") 
+			//println("SIZZE: "+returnRDD.dependencies.size)
+			//returnRDD.dependencies.foreach(println)
+			
 			returnRDD.id=rdd.id
 
 
