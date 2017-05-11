@@ -55,6 +55,7 @@ import org.apache.spark.scheduler._
 import org.apache.spark.scheduler.cluster.{CoarseGrainedSchedulerBackend, StandaloneSchedulerBackend}
 import org.apache.spark.scheduler.local.LocalSchedulerBackend
 import org.apache.spark.storage._
+import org.apache.spark.storage.StorageLevel
 import org.apache.spark.storage.BlockManagerMessages.TriggerThreadDump
 import org.apache.spark.ui.{ConsoleProgressBar, SparkUI}
 import org.apache.spark.ui.jobs.JobProgressListener
@@ -1698,8 +1699,8 @@ class SparkContext(config: SparkConf) extends Logging {
 	persistentRdds(rdd.id) = rdd
   }
   private[spark] def persistRDDCustom(rddPersist: RDD[_], rddID:RDD[_]) {
-	println("CUSTOM PERSIST CALLED !!!!!")
-	println("RDD ID: "+rddID.id)
+	// println("CUSTOM PERSIST CALLED !!!!!")
+	// println("RDD ID: "+rddID.id)
 	persistentRdds(rddID.id) = rddPersist
   }
 
@@ -1939,9 +1940,9 @@ class SparkContext(config: SparkConf) extends Logging {
 			intercepted=1
 			idTemp=id
 		  }else {
-		  		if(rdd.name == "NewName"){
-				println("Previous Iteration Cached rdd found, unpersisting")
-				rdd.unpersist()
+		  // 		if(rdd.name == "NewName"){
+				// // println("Previous Iteration Cached rdd found, unpersisting")
+				// // rdd.unpersist()
 			}else if (rdd.name=="nRdd"){
 				newN=rdd.asInstanceOf[RDD[Int]].first()
 				rdd.unpersist()
@@ -1969,7 +1970,7 @@ class SparkContext(config: SparkConf) extends Logging {
 			var tempRdd= newRdd.map(values=>(values._1,values._2.zipWithIndex.map(y=>(y._2,y._1))))
 			var returnRDD=tempRdd.map(values=> (values._1,values._2.filter(z=>z._1<newN).map(x=>x._2)))
 			returnRDD.id=rdd.id
-			returnRDD.cache
+			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
 			
 			println("RETURN RDD DEPENDENCIES") 
