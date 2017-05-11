@@ -55,7 +55,6 @@ import org.apache.spark.scheduler._
 import org.apache.spark.scheduler.cluster.{CoarseGrainedSchedulerBackend, StandaloneSchedulerBackend}
 import org.apache.spark.scheduler.local.LocalSchedulerBackend
 import org.apache.spark.storage._
-import org.apache.spark.storage.StorageLevel
 import org.apache.spark.storage.BlockManagerMessages.TriggerThreadDump
 import org.apache.spark.ui.{ConsoleProgressBar, SparkUI}
 import org.apache.spark.ui.jobs.JobProgressListener
@@ -1939,7 +1938,11 @@ class SparkContext(config: SparkConf) extends Logging {
 			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
 			idTemp=id
-		  }else if (rdd.name=="nRdd"){
+		  }else {
+		  		if(rdd.name == "NewName"){
+				println("Previous Iteration Cached rdd found, unpersisting")
+				rdd.unpersist()
+			}else if (rdd.name=="nRdd"){
 				newN=rdd.asInstanceOf[RDD[Int]].first()
 				rdd.unpersist()
 			}
@@ -1968,8 +1971,12 @@ class SparkContext(config: SparkConf) extends Logging {
 			returnRDD.id=rdd.id
 			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
-            //rdd.deps=returnRdd.deps
-            //rdd.dependencies_=returnRdd.dependencies_
+			
+			println("RETURN RDD DEPENDENCIES") 
+			println("SIZZE: "+returnRDD.dependencies.size)
+			returnRDD.dependencies.foreach(println)
+			returnRDD.id=rdd.id
+
 
 			dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
 			progressBar.foreach(_.finishAll())
