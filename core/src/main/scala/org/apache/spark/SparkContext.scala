@@ -1971,7 +1971,7 @@ class SparkContext(config: SparkConf) extends Logging {
 			var returnRDD=tempRdd.map(values=> (values._1,values._2.filter(z=>z._1<newN).map(x=>x._2)))
 			returnRDD.id=rdd.id
 			//returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
-			rdd.clearDependenciesCustom
+			//rdd.clearDependenciesCustom
             rdd.deps=returnRDD.deps
             //rdd.dependencies_=returnRdd.dependencies_
 
