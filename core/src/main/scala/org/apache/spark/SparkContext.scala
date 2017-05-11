@@ -1938,11 +1938,13 @@ class SparkContext(config: SparkConf) extends Logging {
 			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
 			idTemp=id
-		  }else if (rdd.name=="nRdd"){
-				newN=rdd.asInstanceOf[RDD[Int]].first()
-				rdd.unpersist()
+		  }else {
+				if (rdd.name=="nRdd"){
+					newN=rdd.asInstanceOf[RDD[Int]].first()
+					rdd.unpersist()
+				} 
 			}
-		  }
+		}
 	  }
 	}
 
