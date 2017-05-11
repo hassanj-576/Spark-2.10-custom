@@ -1939,11 +1939,7 @@ class SparkContext(config: SparkConf) extends Logging {
 			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
 			idTemp=id
-		  }else {
-		  		if(rdd.name == "NewName"){
-      				println("Previous Iteration Cached rdd found, unpersisting")
-      				rdd.unpersist()
-			}else if (rdd.name=="nRdd"){
+		  }else if (rdd.name=="nRdd"){
 				newN=rdd.asInstanceOf[RDD[Int]].first()
 				rdd.unpersist()
 			}
@@ -1970,12 +1966,12 @@ class SparkContext(config: SparkConf) extends Logging {
 			var tempRdd= newRdd.map(values=>(values._1,values._2.zipWithIndex.map(y=>(y._2,y._1))))
 			var returnRDD=tempRdd.map(values=> (values._1,values._2.filter(z=>z._1<newN).map(x=>x._2)))
 			returnRDD.id=rdd.id
-			//returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
-			rdd.clearDependencies
-            rdd.deps=returnRDD.deps
+			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
+			rdd.clearDependenciesCustom
+            //rdd.deps=returnRDD.deps
             //rdd.dependencies_=returnRdd.dependencies_
 
-			dagScheduler.runJob(rdd, cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
+			dagScheduler.runJob(returnRDD.asInstanceOf[RDD[T]], cleanedFunc, partitions, callSite, resultHandler, localProperties.get)
 			progressBar.foreach(_.finishAll())
 			rdd.doCheckpoint()
 		}
