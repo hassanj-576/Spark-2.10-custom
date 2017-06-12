@@ -1915,33 +1915,26 @@ class SparkContext(config: SparkConf) extends Logging {
 	  throw new IllegalStateException("SparkContext has been shutdown")
 	}
 
-	// println("--")
-	// println("--")
-	// println("Spark Context")
-	// println("RDD DEPENDENCIES: ")
-	// println("SIZZE: "+rdd.dependencies.size)
-	// rdd.dependencies.foreach(println)
+	
 
 	val callSite = getCallSite
 	val cleanedFunc = clean(func)
-	// println("Short name: "+callSite.shortForm)
-	// println("Cleaned Func: "+cleanedFunc)
-	// println("RDD NAME: "+rdd.name)
+
 	var intercepted=0
 	var idTemp=0
 	var newN=0;
 	if(rdd.name=="superSet"){
-	  // println("SuperSet  FOUND")
+	
 	  for ((id: Int,rdd: org.apache.spark.rdd.RDD[_])<- getPersistentRDDs ){
-		  // println("PERSISTANT RDD NAME: "+rdd.name)
+		
 		  if(rdd.name == "superSet"){
-			println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
+			//println("Super Set RDD in cache, Trying to Calculate new RDD from Superset")
 			intercepted=1
 			idTemp=id
 		  }else {
 		  		if(rdd.name == "NewName"){
-				println("Previous Iteration Cached rdd found, unpersisting")
-				//rdd.unpersist()
+				//println("Previous Iteration Cached rdd found, unpersisting")
+				
 			}else if (rdd.name=="nRdd"){
 				newN=rdd.asInstanceOf[RDD[Int]].first()
 				rdd.unpersist()
@@ -1950,9 +1943,7 @@ class SparkContext(config: SparkConf) extends Logging {
 	  }
 	}
 
-	// println("END Spark Context")
-	// println("--")
-	// println("--")
+	
 	if(intercepted==0){
 		logInfo("Starting job: " + callSite.shortForm)
 		if (conf.getBoolean("spark.logLineage", false)) {
@@ -1962,7 +1953,7 @@ class SparkContext(config: SparkConf) extends Logging {
 		progressBar.foreach(_.finishAll())
 		rdd.doCheckpoint()
 	}else{
-		println("Inside Calcuation for new RDD from Superset")
+		//println("Inside Calcuation for new RDD from Superset")
 		try{
 			val newRdd=getPersistentRDDs(idTemp).asInstanceOf[RDD[(Long, Array[(Long, Double)])]]
 			rdd.setName("NewName")
@@ -1972,9 +1963,6 @@ class SparkContext(config: SparkConf) extends Logging {
 			returnRDD.persist(StorageLevel.MEMORY_AND_DISK)
 			rdd.clearDependenciesCustom
 			
-			//println("RETURN RDD DEPENDENCIES") 
-			//println("SIZZE: "+returnRDD.dependencies.size)
-			//returnRDD.dependencies.foreach(println)
 			
 			returnRDD.id=rdd.id
 
@@ -1988,13 +1976,13 @@ class SparkContext(config: SparkConf) extends Logging {
 		}
 		//newRdd.unpersist()
 		
-		//println(rdd.first())
+		
 	   
 	//     rdd.cache
 	//     rdd.setName("NewName")
 	//     dagScheduler.runJob(rdd, cleanedFunc, Seq.empty[Int], callSite, resultHandler, localProperties.get)
 	//     progressBar.foreach(_.finishAll())
-	//     println("FIRST OF THE RDD IN SPARK CONTEX: "+rdd.first())
+	//   
 		// rdd.doCheckpoint()
 	}
   }
